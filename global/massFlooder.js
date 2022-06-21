@@ -1,3 +1,15 @@
+var getValues = () => new Promise((e, t) => {
+    try {
+        let n = window.webpackJsonp.map(e => Object.keys(e[1]).map(t => e[1][t])).reduce((e, t) => [...e, ...t], []).find(e => /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(e.toString()) && /\(new TextEncoder\)\.encode\(\"(.+?)\"\)/.test(e.toString())).toString();
+        e({
+            blooketBuild: n.match(/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/)[0],
+            secret: n.match(/\(new TextEncoder\)\.encode\(\"(.+?)\"\)/)[1]
+        })
+    } catch {
+        t("Could not fetch auth details")
+    }
+});
+
 async function join(id, name, blook) {
   fetch("https://fb.blooket.com/c/firebase/join", {
     headers: {
@@ -37,8 +49,7 @@ var encodePayload = async (b, c) => {
     name: "AES-GCM"
   }, !1, ["encrypt"]), new TextEncoder().encode(JSON.stringify(b))))).map((a) => String.fromCharCode(a)).join(""));
 }
-window.blooketBuild = window.webpackJsonp.map(e => Object.keys(e[1]).map(t => e[1][t])).reduce((e, t) => [...e, ...t], []).find(e => /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(e.toString()) && /\(new TextEncoder\)\.encode\(\"(.+?)\"\)/.test(e.toString())).toString().match(/\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/)[0]
-window.secret = window.webpackJsonp.map(e => Object.keys(e[1]).map(t => e[1][t])).reduce((e, t) => [...e, ...t], []).find(e => /\w{8}-\w{4}-\w{4}-\w{4}-\w{12}/.test(e.toString()) && /\(new TextEncoder\)\.encode\(\"(.+?)\"\)/.test(e.toString())).toString().match(/\(new TextEncoder\)\.encode\(\"(.+?)\"\)/)[1]
+(async () => { Object.assign(window, await getValues()) } )();
 k = document.createElement('iframe')
 k.style.width = '0px'
 k.style.height = '0px'
@@ -51,6 +62,6 @@ name = prompt('What name would you like to use?')
 id = prompt('What is the game PIN / ID')
 
 for (i = 0; i < amount; i++) {
-  join(id, `${name}${i}`, 'Fox')
+  try{join(id, `${name}${i}`, 'Fox')}catch(e){}
   console.log(`Added player with name: "${name}${i}"`)
 }
