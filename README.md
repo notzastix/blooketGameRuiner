@@ -1,4 +1,4 @@
 # blooketGameRuiner
-A variety of scripts to ruin blooket games.  
+A variarty of scripts to "ruin" blooket games.
   
 test
