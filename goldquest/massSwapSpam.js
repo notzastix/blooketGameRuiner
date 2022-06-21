@@ -39,4 +39,4 @@ window.secret = window.webpackJsonp.map(e => Object.keys(e[1]).map(t => e[1][t])
         ruinPlayer(p)
     })
 
-})
+})();
